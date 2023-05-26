@@ -1,0 +1,164 @@
+﻿<Window x:Class="OLEDWindowsApplication.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OLEDWindowsApplication"
+        mc:Ignorable="d"
+        Title="OLED Keyboard Companion" Height="450" Width="800" MinHeight="550" MinWidth="800" MaxHeight="550" MaxWidth="800">
+    <Grid Background="#202020">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="79*"/>
+            <RowDefinition Height="138*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="36px"/>
+            <ColumnDefinition Width="150px"/>
+            <ColumnDefinition Width="644px"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column ="0" Grid.Row="0" Grid.RowSpan="2" Background="#202020"/>
+        <Border Grid.Column ="1" Grid.Row="0" Grid.RowSpan="2" Background="#FF424242" CornerRadius="12"/>
+        <Border Grid.Column ="2" Grid.Row="0" Grid.RowSpan="2" Background="#202020"/>
+
+        <Grid Visibility="Visible" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
+            <ScrollViewer HorizontalAlignment="Center" VerticalAlignment="Top" Width="36" VerticalScrollBarVisibility="Hidden">
+                <StackPanel x:Name="Sidebar" VerticalAlignment="Top" HorizontalAlignment="Left" Width="36">
+                    <Button x:Name="AddLayout" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="36" Width="36" Click="CreateNewLayout">
+                        <Viewbox>
+                            <Image x:Name="addLayout" Source="pack://application:,,,/Resources/addLayout.png" Height="36" Width="36"/>
+                        </Viewbox>
+                    </Button>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+        <Grid x:Name="LayoutOptions" Visibility="Visible" Grid.Column="1" Grid.Row="0"
+              Grid.RowSpan="2"><Label Content="OPTIONS" Foreground="GhostWhite" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20"/>
+            <TextBox x:Name="LayoutNameBox" HorizontalAlignment="Center" Margin="0,40,0,0" TextWrapping="Wrap" Text="ENTER NAME" VerticalAlignment="Top" Width="120" GotFocus="textBox_Enter" LostFocus="textBox_Leave"/>
+            <Button Content="SET NAME" Foreground="GhostWhite" Background="#202020"  HorizontalAlignment="Center" Margin="0,60,0,0" VerticalAlignment="Top" Width="120" Click="ApplyName"/>
+            <Button Content="SET ICON" Foreground="GhostWhite" Background="#202020" HorizontalAlignment="Center" Margin="0,90,0,0" VerticalAlignment="Top" Width="120" Click="SelectSidebarIcon"/>
+            <Button Content="SET APP" Foreground="GhostWhite" Background="#202020" HorizontalAlignment="Center" Margin="0,225,0,0" VerticalAlignment="Top" Width="120" Click="SelectApp"/>
+            <Label x:Name="SelectedAppLabel" Content="Not Selected" Foreground="GhostWhite" HorizontalAlignment="Left" Margin="15,245,0,0" VerticalAlignment="Top" Width="100" />
+            <Button Content="X" Foreground="GhostWhite" Background="#202020" HorizontalAlignment="Center" Margin="100,250,0,0" VerticalAlignment="Top" Width="20" Click="ClearApp"/>
+            <Button Content="RESET" Foreground="GhostWhite" Background="#202020" HorizontalAlignment="Left" Margin="15,175,0,0" VerticalAlignment="Top" Height="41" Width="55" Click="ResetLayout"/>
+            <Button Content="DELETE" Foreground="GhostWhite" Background="#202020" HorizontalAlignment="Left" Margin="80,175,0,0" VerticalAlignment="Top" Height="41" Width="55" Click="DeleteLayout"/>
+            <Button Content="APPLY" Foreground="GhostWhite" Background="#202020" HorizontalAlignment="Left" Margin="15,125,0,0" VerticalAlignment="Top" Height="41" Width="120" Click="ApplyLayout"/>
+            <Label Content="BRIGHTNESS" Foreground="GhostWhite" HorizontalAlignment="Center" Margin="0,280,0,0" VerticalAlignment="Top"/>
+            <Slider x:Name="BrightnessSlider" HorizontalAlignment="Center" VerticalAlignment="Top" Width="120" Margin="0,300,0,0" Minimum="0" Maximum="1.0" TickFrequency="0.1" IsMoveToPointEnabled="True" IsSnapToTickEnabled="True" ValueChanged="BrightnessSlider_OnValueChanged"/>
+        </Grid>
+        <Grid x:Name="KeyOptions" Visibility="Collapsed" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
+            <Label Content="OPTIONS" Foreground="GhostWhite" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20"/>
+            <Button Content="UPLOAD" Foreground="GhostWhite" Background="#202020" HorizontalAlignment="Left" Margin="15,90,0,0" VerticalAlignment="Top" Height="41" Width="55" Click="ChangeKeyImage"/>
+            <Button Content="APPLY" Foreground="GhostWhite" Background="#202020" HorizontalAlignment="Left" Margin="80,90,0,0" VerticalAlignment="Top" Height="41" Width="55" Click="ApplyKey"/>
+            <Button Content="SAVE" Foreground="GhostWhite" Background="#202020" HorizontalAlignment="Left" Margin="15,140,0,0" VerticalAlignment="Top" Height="41" Width="55" Click="SaveIndivKeySettings"/>
+            <Button Content="CANCEL" Foreground="GhostWhite" Background="#202020" HorizontalAlignment="Left" Margin="80,140,0,0" VerticalAlignment="Top" Height="41" Width="55" Click="CancelChanges"/>
+        </Grid>
+        <Grid x:Name="Numpad" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Visibility="Visible">
+            <Button x:Name="HelpButton" HorizontalAlignment="Left" Margin="545,15,0,0" VerticalAlignment="Top" Height="45" Width="45" Click="HelpButtonClick">
+                <Viewbox>
+                    <Image Source="pack://application:,,,/Resources/question.png" Height="45" Width="45"/>
+                </Viewbox>
+            </Button>
+            <Label x:Name="LayoutName" Content="Layout Name" HorizontalAlignment="Center" Foreground="GhostWhite" VerticalAlignment="Top" FontSize="20" Margin="0,0,30,0"/>
+            <Rectangle HorizontalAlignment="Center" Height="467" VerticalAlignment="Top" Width="370" Fill="#FF424242" Margin="0,37,30,0" RadiusX="12" RadiusY="12"/>
+            <local:ButtonWithPositionEnum x:Name="Back" CurrentPosition="Back" HorizontalAlignment="Left" Margin="145,61,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="backImg" Source="pack://application:,,,/Resources/back.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Slash" CurrentPosition="Slash" HorizontalAlignment="Left" Margin="235,61,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="slashImg" Source="pack://application:,,,/Resources/slash.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Star" CurrentPosition="Star" HorizontalAlignment="Left" Margin="322,61,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="starimg" Source="pack://application:,,,/Resources/asterisk.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Minus" CurrentPosition="Minus" HorizontalAlignment="Left" Margin="405,61,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="minusImg" Source="pack://application:,,,/Resources/-.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Seven" CurrentPosition="Seven" HorizontalAlignment="Left" Margin="145,150,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="sevenImg" Source="pack://application:,,,/Resources/7.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Eight" CurrentPosition="Eight" HorizontalAlignment="Left" Margin="235,150,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="eightImg" Source="pack://application:,,,/Resources/8.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Nine" CurrentPosition="Nine" HorizontalAlignment="Left" Margin="322,150,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="nineImg" Source="pack://application:,,,/Resources/9.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Equals" CurrentPosition="Equals" HorizontalAlignment="Left" Margin="405,244,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="equalsImg" Source="pack://application:,,,/Resources/=.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Four" CurrentPosition="Four" HorizontalAlignment="Left" Margin="145,244,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="fourImg" Source="pack://application:,,,/Resources/4.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Five" CurrentPosition="Five" HorizontalAlignment="Left" Margin="235,244,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="fiveImg" Source="pack://application:,,,/Resources/5.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Six" CurrentPosition="Six" HorizontalAlignment="Left" Margin="322,244,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="sixImg" Source="pack://application:,,,/Resources/6.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="One" CurrentPosition="One" HorizontalAlignment="Left" Margin="145,333,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="oneImg" Source="pack://application:,,,/Resources/1.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Two" CurrentPosition="Two" HorizontalAlignment="Left" Margin="235,333,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="twoImg" Source="pack://application:,,,/Resources/2.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Three" CurrentPosition="Three" HorizontalAlignment="Left" Margin="322,333,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="threeImg" Source="pack://application:,,,/Resources/3.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Plus" CurrentPosition="Plus" HorizontalAlignment="Left" Margin="405,150,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="plusImg" Source="pack://application:,,,/Resources/+.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Enter" CurrentPosition="Enter" HorizontalAlignment="Left" Margin="405,333,0,0" Background="Black" BorderBrush="#202020" BorderThickness="2px" VerticalAlignment="Top" Height="145" Width="64" Click="OpenKeySettings" RenderTransformOrigin="0.492,0.563">
+                <Viewbox>
+                    <Image x:Name="enterImg" Source="pack://application:,,,/Resources/ent.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Zero" CurrentPosition="Zero" HorizontalAlignment="Left" Margin="145,414,0,0" Background="Black" BorderBrush="#202020" BorderThickness="2px" VerticalAlignment="Top" Height="64" Width="154" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="zeroImg" Source="pack://application:,,,/Resources/0.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+            <local:ButtonWithPositionEnum x:Name="Dot" CurrentPosition="Dot" HorizontalAlignment="Left" Margin="321,414,0,0" VerticalAlignment="Top" Background="#202020" BorderBrush="#202020" Height="64" Width="64" Click="OpenKeySettings">
+                <Viewbox>
+                    <Image x:Name="dotImg" Source="pack://application:,,,/Resources/dot.png" Height="64" Width="64" ToolTip="Click here to edit key settings"/>
+                </Viewbox>
+            </local:ButtonWithPositionEnum>
+        </Grid>
+        <Grid x:Name="KeyLayout" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" Visibility="Collapsed">
+            <Viewbox>
+                <Image x:Name="Real_Size_Image" Height="64" Width="64" Margin="171,161,378,208" />
+            </Viewbox>
+            <Viewbox>
+                <Image x:Name="Big_Image" Height="192" Width="192" Margin="254,97,168,145" />
+            </Viewbox>
+            <Label x:Name="KeyTitle" Content="Blank Key" Foreground="GhostWhite" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="18"/>
+        </Grid>
+    </Grid>
+</Window>
